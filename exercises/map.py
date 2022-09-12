@@ -11,9 +11,9 @@ class MapExercise:
             else:
                 return None
 
-        list_of_movies = list(map(func, list_of_movies))
-        list_of_movies = list(filter(lambda x: x is not None, list_of_movies))
-        return reduce(lambda x, y: x + y, list_of_movies) / len(list_of_movies)
+        list_of_floats = list(map(func, list_of_movies))
+        list_of_floats_filtered = list(filter(lambda x: x is not None, list_of_floats))
+        return reduce(lambda x, y: x + y, list_of_floats_filtered) / len(list_of_floats_filtered)
 
     @staticmethod
     def chars_count(list_of_movies: list[dict], rating: Union[float, int]) -> int:
@@ -23,5 +23,5 @@ class MapExercise:
             else:
                 return 0
 
-        list_of_movies = map(count_i, list_of_movies)
-        return reduce(lambda x, y: x + y, list_of_movies)
+        list_of_letter_counts = map(count_i, list_of_movies)
+        return reduce(lambda x, y: x + y, list_of_letter_counts)
