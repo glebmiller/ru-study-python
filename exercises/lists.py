@@ -13,12 +13,12 @@ class ListExercise:
             return input_list
         else:
             max_int = max_value(input_list)
-            input_list = list(map(lambda x: x if x < 0 else max_int, input_list))
-            return input_list
+            sorted_list = list(map(lambda x: x if x < 0 else max_int, input_list))
+            return sorted_list
 
     @staticmethod
     def search(input_list: list[int], query: int) -> int:
-        def search(arr, low, high, x):
+        def search(arr: list[int], low: int, high: int, x: int) -> int:
 
             # Check base case
             if high >= low:
