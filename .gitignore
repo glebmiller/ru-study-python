@@ -2,3 +2,5 @@
 .coverage
 .coverage.*
 .idea/
+env/
+exercises/__pycache__/
