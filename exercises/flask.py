@@ -1,3 +1,4 @@
+from unittest.mock import patch
 from flask import Flask
 from flask import request
 import json
@@ -53,7 +54,7 @@ class FlaskExercise:
                 )
                 return response
 
-        @app.route("/user/<user_id>", methods=["GET", "POST", "DELETE"])
+        @app.route("/user/<user_id>", methods=["GET", "POST", "DELETE", "PATCH"])
         def user_modify(user_id):
             if request.method == "GET":
                 if user_id in dict_of_users:
@@ -65,11 +66,11 @@ class FlaskExercise:
                     return response
 
             if request.method == "PATCH":
-
+                # print("patch")
                 request_data = request.get_json()
                 new_name = request_data["name"]
                 dict_of_users[new_name] = dict_of_users[user_id]
-                dict_of_users[user_id].pop()
+                dict_of_users.pop(user_id)
 
                 text = {"data": f"My name is {new_name}"}
                 response = app.response_class(
@@ -78,7 +79,7 @@ class FlaskExercise:
                 return response
 
             if request.method == "DELETE":
-                dict_of_users[user_id].pop()
+                dict_of_users.pop(user_id)
                 response = app.response_class(status=204)
                 return response
 
