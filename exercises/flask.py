@@ -1,10 +1,10 @@
-from unittest.mock import patch
+from typing import Any
 from flask import Flask
 from flask import request
 import json
 
-app = Flask(__name__)
 
+app = Flask(__name__)
 dict_of_users = dict()
 
 
@@ -12,7 +12,7 @@ class FlaskExercise:
     """
     Вы должны создать API для обработки CRUD запросов.
     В данной задаче все пользователи хранятся в одном словаре, где ключ - это имя пользователя,
-    а значение - его параметры. {"user1": {"age": 33}, "user2": {"age": 20}}
+    а значение - его параметры. {"user1":   , "user2": {"age": 20}}
     Словарь (dict) хранить в памяти, он должен быть пустым при старте flask.
 
     POST /user - создание пользователя.
@@ -36,7 +36,7 @@ class FlaskExercise:
     @staticmethod
     def configure_routes(app: Flask) -> None:
         @app.route("/user", methods=["POST"])
-        def user():
+        def user() -> Any:
             request_data = request.get_json()
             if "name" in request_data:
                 name = request_data["name"]
@@ -48,14 +48,14 @@ class FlaskExercise:
                 )
                 return response
             else:
-                text = {"errors": {"name": "This field is required"}}
+                reply = {"errors": {"name": "This field is required"}}
                 response = app.response_class(
-                    response=json.dumps(text), status=422, mimetype="application/json"
+                    response=json.dumps(reply), status=422, mimetype="application/json"
                 )
                 return response
 
-        @app.route("/user/<user_id>", methods=["GET", "POST", "DELETE", "PATCH"])
-        def user_modify(user_id):
+        @app.route("/user/<user_id>", methods=["GET", "DELETE", "PATCH"])
+        def user_modify(user_id: str) -> Any:
             if request.method == "GET":
                 if user_id in dict_of_users:
                     text = {"data": f"My name is {user_id}"}
@@ -64,9 +64,11 @@ class FlaskExercise:
                         response=json.dumps(text), status=200, mimetype="application/json"
                     )
                     return response
+                else:
+                    response = app.response_class(status=404)
+                    return response
 
             if request.method == "PATCH":
-                # print("patch")
                 request_data = request.get_json()
                 new_name = request_data["name"]
                 dict_of_users[new_name] = dict_of_users[user_id]
@@ -83,6 +85,8 @@ class FlaskExercise:
                 response = app.response_class(status=204)
                 return response
 
+
+FlaskExercise.configure_routes(app)
 
 if __name__ == "__main__":
     app.run(host="127.0.0.1", port=5000)
