@@ -54,7 +54,7 @@ class FlaskExercise:
                 )
                 return response
 
-        @app.route("/user/<user_id>", methods=["GET", "POST", "DELETE", "PATCH"])
+        @app.route("/user/<user_id>", methods=["GET", "DELETE", "PATCH"])
         def user_modify(user_id):
             if request.method == "GET":
                 if user_id in dict_of_users:
