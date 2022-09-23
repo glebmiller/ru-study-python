@@ -48,6 +48,7 @@ class TestFlaskExercise:
         assert response == {"data": "User Heisenberg is created!"}
 
     def test_unprocessable_entity(self) -> None:
+
         response = self.flask_client.post(
             "/user",
             data=json.dumps({"profession": "Chemistry teacher"}),

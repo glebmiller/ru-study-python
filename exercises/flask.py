@@ -3,8 +3,8 @@ from flask import Flask
 from flask import request
 import json
 
-app = Flask(__name__)
 
+app = Flask(__name__)
 dict_of_users = dict()
 
 
@@ -68,7 +68,6 @@ class FlaskExercise:
                     return response
 
             if request.method == "PATCH":
-                # print("patch")
                 request_data = request.get_json()
                 new_name = request_data["name"]
                 dict_of_users[new_name] = dict_of_users[user_id]
@@ -85,6 +84,8 @@ class FlaskExercise:
                 response = app.response_class(status=204)
                 return response
 
+
+FlaskExercise.configure_routes(app)
 
 if __name__ == "__main__":
     app.run(host="127.0.0.1", port=5000)
