@@ -1,4 +1,4 @@
-from unittest.mock import patch
+from typing import Any
 from flask import Flask
 from flask import request
 import json
@@ -36,33 +36,35 @@ class FlaskExercise:
     @staticmethod
     def configure_routes(app: Flask) -> None:
         @app.route("/user", methods=["POST"])
-        def user():
+        def user() -> Any:
             request_data = request.get_json()
             if "name" in request_data:
-                name = request_data["name"]
-                request_data.pop("name")
+                name = request_data.pop("name")
                 dict_of_users[name] = request_data
-                text = {"data": f"User {name} is created!"}
+                response_data = {"data": f"User {name} is created!"}
                 response = app.response_class(
-                    response=json.dumps(text), status=201, mimetype="application/json"
+                    response=json.dumps(response_data), status=201, mimetype="application/json"
                 )
                 return response
             else:
-                text = {"errors": {"name": "This field is required"}}
+                reply = {"errors": {"name": "This field is required"}}
                 response = app.response_class(
-                    response=json.dumps(text), status=422, mimetype="application/json"
+                    response=json.dumps(reply), status=422, mimetype="application/json"
                 )
                 return response
 
         @app.route("/user/<user_id>", methods=["GET", "DELETE", "PATCH"])
-        def user_modify(user_id):
+        def user_modify(user_id: str) -> Any:
             if request.method == "GET":
                 if user_id in dict_of_users:
-                    text = {"data": f"My name is {user_id}"}
+                    response_data = {"data": f"My name is {user_id}"}
 
                     response = app.response_class(
-                        response=json.dumps(text), status=200, mimetype="application/json"
+                        response=json.dumps(response_data), status=200, mimetype="application/json"
                     )
+                    return response
+                else:
+                    response = app.response_class(status=404)
                     return response
 
             if request.method == "PATCH":
@@ -72,9 +74,9 @@ class FlaskExercise:
                 dict_of_users[new_name] = dict_of_users[user_id]
                 dict_of_users.pop(user_id)
 
-                text = {"data": f"My name is {new_name}"}
+                response_data = {"data": f"My name is {new_name}"}
                 response = app.response_class(
-                    response=json.dumps(text), status=200, mimetype="application/json"
+                    response=json.dumps(response_data), status=200, mimetype="application/json"
                 )
                 return response
 
