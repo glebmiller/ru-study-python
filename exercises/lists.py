@@ -2,9 +2,11 @@ class ListExercise:
     @staticmethod
     def replace(input_list: list[int]) -> list[int]:
         def max_value(searched_list: list[int]) -> int:
-            res = -(10 ** 6)
+            res = None
             for i in searched_list:
-                if i > res:
+                if res is None:
+                    res = i
+                elif i > res:
                     res = i
             return res
 
