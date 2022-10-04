@@ -48,6 +48,7 @@ class TestFlaskExercise:
         assert response == {"data": "User Heisenberg is created!"}
 
     def test_unprocessable_entity(self) -> None:
+
         response = self.flask_client.post(
             "/user",
             data=json.dumps({"profession": "Chemistry teacher"}),
@@ -55,7 +56,7 @@ class TestFlaskExercise:
         )
 
         assert response.status_code == HTTPStatus.UNPROCESSABLE_ENTITY
-        assert response == {"errors": {"name": "This field is required"}}
+        assert response.get_json() == {"errors": {"name": "This field is required"}}
 
     def test_get(self) -> None:
         self.create_user({"name": "Heisenberg"})
